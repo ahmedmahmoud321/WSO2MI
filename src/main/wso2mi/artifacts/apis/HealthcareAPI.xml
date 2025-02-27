@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api name="HealthcareAPI" context="/healthcare" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="POST" uri-template="/categories/{category}/reserve">
+        <inSequence>
+            <property name="uri.var.hospital" scope="default" type="STRING" expression="${$.hospital_id}"/>
+            <datamapper config="resources:datamapper/RequestMapping/RequestMapping.dmc" inputSchema="resources:datamapper/RequestMapping/RequestMapping_inputSchema.json" inputType="JSON" outputSchema="resources:datamapper/RequestMapping/RequestMapping_outputSchema.json" outputType="JSON"/>
+            <call>
+                <endpoint key="HospitalServicesEP"/>
+            </call>
+            <respond/>
+        </inSequence>
+        <faultSequence>
+        </faultSequence>
+    </resource>
+</api>

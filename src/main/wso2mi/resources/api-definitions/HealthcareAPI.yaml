@@ -1,13 +1,19 @@
 openapi: 3.0.1
 info:
-  title: TransformAPI
-  description: API Definition of TransformAPI
+  title: HealthcareAPI
+  description: API Definition of HealthcareAPI
   version: 1.0.0
 servers:
-- url: http://localhost:8290/transform
+- url: http://localhost:8290/healthcare
 paths:
-  /healthcare:
+  /categories/{category}/reserve:
     post:
+      parameters:
+      - name: category
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         description: Sample Payload
         content:
