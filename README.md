@@ -183,6 +183,9 @@ After the `<call>` mediator sends the SOAP request to `SimpleStockEp`, the respo
 `action` is the action to be performed on the property. The possible values are `set` and `remove`.
 
 `DataType` is the type of the property value. The possible values are `STRING`, `INTEGER`, `FLOAT`, `DOUBLE`, `BOOLEAN`,
+`OM`,`JSON`.
+
+![img_1.png](img/img_1.png)
 
 **`expression`**
 
@@ -197,9 +200,9 @@ value of the `JSON_PATH` property in the `JSON_PRINT` property.
 
 **`Scope`**
 
-![img.png](img.png)
+![img.png](img/img.png)
 
-#### Property Mediator Examples with `Scope`:
+#### Property Mediator Examples with `Scope`
 
 #### Synapse Scope (Default)
 
@@ -319,7 +322,7 @@ This scope is used to retrieve properties defined in the `file.properties` confi
 </log>
 ```
 
-### Example
+#### Example
 
 #### Error Handling
 
@@ -339,6 +342,310 @@ This scope is used to retrieve properties defined in the `file.properties` confi
 </args>
 </payloadFactory>
 ```
+
+### Registry
+
+**What is registry?**  The registry is a storage space for artifacts that are used in the `ESB`. It is a centralized
+
+### Local Registry Entry
+
+The local registry acts as a memory registry where you can store static content as a key-value pair. This could be a
+static text specified as inline text, static XML specified as an inline XML fragment, or a URL (using the src
+attribute).
+
+**Plain Text**
+
+```xml
+
+<localEntry key="version" xmlns="http://ws.apache.org/ns/synapse">0.1</localEntry>
+```
+
+**XML**
+
+```xml
+
+<localEntry key="validate_schema" xmlns="http://ws.apache.org/ns/synapse">
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        ...
+    </xs:schema>
+</localEntry>
+```
+
+**URL**
+
+```xml
+
+<localEntry key="payload" xmlns="http://ws.apache.org/ns/synapse"
+            src="file:repository/samples/resources/transform/transform.xslt"/>
+```
+
+### Header Mediator
+
+The header mediator is used to add, remove, or modify HTTP headers in the message. It can be used to set custom headers
+
+#### Configuration
+
+**`name`**  The name of the header to be added, removed, or modified.
+
+**`action`** can be `set` or `remove`.
+
+**`scope`** can be `transport` or `default`.
+
+**`value`**  The value of the header to be added.
+
+**`value type`** can be `LITERAL` or `EXPRESSION` or `INLINE`.
+
+##### Scope
+
+Select `Synapse` if you want to manipulate **SOAP headers**. Select `Transport` if you want to manipulate **HTTP headers
+**.
+
+##### Value
+
+**Value Expression**
+
+Static value or an **XPath** `XML Path`/**JSONPath** `JSON PATH` expression that will be executed on the message to set
+the header value.
+
+**`Inline`**
+
+This parameter allows you to directly `input any XML syntax`  to the Header mediator **(specifically for SOAP
+headers)**.
+
+#### Example
+
+**Http Header**
+
+```xml
+
+<inSequence>
+    <header name="Accept" value="image/jpeg" scope="transport"/>
+    <call>
+        <endpoint name="people">
+            <address uri="http://localhost:9763/people/eric+cooke" format="get"/>
+        </endpoint>
+    </call>
+    <respond/>
+</inSequence>
+```
+
+**Soap Header**
+
+> #### URN
+>
+>Uniform Resource Name (URN) that specifies the action to be performed in a SOAP request. In this case, urn:getQuote
+> likely refers to a specific operation or method that the SOAP service should execute,
+
+```xml
+
+<inSequence>
+    <header name="To" value="http://localhost:8280/services/SimpleStockQuoteService" scope="default"/>
+    <header name="Action" value="urn:getQuote" scope="default"/>
+    <call>
+        <endpoint key="SimpleStockEp"/>
+    </call>
+    <respond/>
+</inSequence>
+```
+
+```xml
+
+<resource methods="GET" uri-template="/getQuote">
+    <inSequence>
+        <property name="REQUEST_HEADER" scope="default" type="OM">
+            <p1:Code xmlns:p1="http://www.XYZ.com/XSD">XYZ</p1:Code>
+        </property>
+
+
+        <header name="p1:Code" scope="default" expression="$ctx:REQUEST_HEADER" xmlns:p1="http://www.XYZ.com/XSD"/>
+        <call>
+            <endpoint key="SimpleStockQuoteServiceEP"/>
+        </call>
+        <!-- Setting a complex XML structure as a SOAP header for the response -->
+        <property name="RESPONSE_HEADER" scope="default" type="OM">
+            <p2:Header xmlns:p2="http://www.ABC.com/XSD">
+                <p2:Hello>World</p2:Hello>
+            </p2:Header>
+        </property>
+        <header name="p2:Header" xmlns:p2="http://www.ABC.com/XSD" action="set" scope="default"
+                expression="$ctx:RESPONSE_HEADER"/>
+
+        <respond/>
+    </inSequence>
+</resource>
+```
+
+#### Explain
+
+> This Header added before the call to the endpoint
+
+> Defined in default scope to be used later
+> The type is OM because it will be header from XML
+
+```xml
+
+<property name="REQUEST_HEADER" scope="default" type="OM">
+    <p1:Code xmlns:p1="http://www.XYZ.com/XSD">XYZ</p1:Code>
+</property>
+```
+
+> #### `$ctx`: Prefix
+> `$ctx`: is a special prefix used in WSO2 MI that **refers to the message context**.
+
+> When you use `$ctx:REQUEST_HEADER`, you're
+> retrieving a > property named `"REQUEST_HEADER"` that was previously stored in the message context using the property
+> mediator.
+>
+
+
+> `p1:Code` is the prefix and value of the previous header property
+> `p1` is a namespace prefix that refers to the namespace `http://www.XYZ.com/XSD` in the header property.
+
+```xml
+
+<header name="p1:Code" scope="default" expression="$ctx:REQUEST_HEADER" xmlns:p1="http://www.XYZ.com/XSD"/>
+```
+
+* This is Stored Header to be used later in the response
+
+```xml
+        <!-- Setting a complex XML structure as a SOAP header for the response -->
+<property name="RESPONSE_HEADER" scope="default" type="OM">
+    <p2:Header xmlns:p2="http://www.ABC.com/XSD">
+        <p2:Hello>World</p2:Hello>
+    </p2:Header>
+</property>
+```
+
+Actual Header to be sent in the response
+
+```xml
+
+<header name="p2:Header" xmlns:p2="http://www.ABC.com/XSD" action="set" scope="default"
+        expression="$ctx:RESPONSE_HEADER"/>
+```
+
+### Proxy Service
+
+Proxy services are **virtual services** that receive messages and optionally process them before forwarding them to a
+service at a given endpoint. This approach allows you to perform necessary transformations and introduce additional
+functionality without changing your existing service.
+
+#### How To Call
+
+##### From REST API Call Direct
+
+**how to call the proxy service ?**.  
+Application sends an `HTTP/HTTPS` request to the proxy service URL, which typically.
+
+looks like: `http://wso2-server:8280/services/WeatherProxyService`.
+
+##### From REST API Call Then Forward a Request
+
+Then it can forward the request to the backend service by defining <target> <endpoint> in the proxy service
+configuration xml.
+
+#### From WSO2 API Flow
+
+Add the mapping of the proxy service to the API in the API configuration xml.
+
+```xml
+
+<call>
+    <endpoint>
+        <address uri="http://localhost:8280/services/WeatherProxyService"/>
+    </endpoint>
+</call>
+```
+
+#### Configurations
+
+`Transports` The transport protocols that the proxy service should use to be able to talk to it.
+
+This can be `http`, `https`, `jms`, `local`, `mailTo`, `vfs`, `tcp`, `udp`, `inbound`, `https` or `rabbitmq`.
+`jms` -> Java Messaging Service
+`vfs` -> Virtual File System
+
+### POX To Json
+
+This will act as function that tke the xml and convert it to json
+proxy will be exposed and can be called using this url `http://localhost:8290/services/POX2JSON`
+
+#### How To Call
+
+![img_2.png](img/img_2.png)
+
+**Message Body**
+
+```xml
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <SpaceX_LaunchPads>
+            <Station>
+                <Name>Kennedy Space Center Historic Launch Complex 39A</Name>
+                <Short_Name>KSC LC 39A</Short_Name>
+                <Launches>
+                    <Attempts>18</Attempts>
+                    <Successful>18</Successful>
+                </Launches>
+                <Region>Florida</Region>
+
+            </Station>
+        </SpaceX_LaunchPads>
+    </soapenv:Body>
+</soapenv:Envelope>
+```
+
+**Pipeline**
+
+
+> Note: arguments use the mapping of XML structure to extract values like `//SpaceX_LaunchPads/Station/Short_Name`.
+
+```xml
+
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="POX2JSONProxy"
+       startOnLoad="true"
+       statistics="disable"
+       trace="disable"
+       transports="http,https">
+    <target>
+        <inSequence>
+            <payloadFactory media-type="json">
+                <format>
+                    {
+                    "name": "$1",
+                    "location": {
+                    "region": "$2",
+                    "latitude": $3,
+                    }
+                </format>
+                <args>
+                    <arg evaluator="xml" expression="//SpaceX_LaunchPads/Station/Short_Name"/>
+                    <arg evaluator="xml" expression="//SpaceX_LaunchPads/Station/Region"/>
+                    <arg evaluator="xml" expression="//SpaceX_LaunchPads/Station/Latitude"/>
+                </args>
+            </payloadFactory>
+            <respond/>
+        </inSequence>
+    </target>
+</proxy>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

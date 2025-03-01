@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<api context="/stockorder_api" name="JSONToSOAP" xmlns="http://ws.apache.org/ns/synapse">
+<api name="SOAP2JSON" context="/stockorder_api" xmlns="http://ws.apache.org/ns/synapse">
     <resource methods="GET POST PUT">
         <inSequence>
             <log level="full"/>
