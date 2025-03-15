@@ -1,0 +1,9 @@
+---
+key: "world-1.0.0"
+name: "world"
+displayName: "world"
+version: "1.0.0"
+serviceUrl: "https://{MI_HOST}:{MI_PORT}/world"
+definitionType: "OAS3"
+securityType: "BASIC"
+mutualSSLEnabled: false

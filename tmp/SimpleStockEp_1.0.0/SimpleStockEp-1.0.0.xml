@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<endpoint name="MockBackendService" xmlns="http://ws.apache.org/ns/synapse">
-    <http method="get" uri-template="https://google.com/">
+<endpoint name="SimpleStockEp" xmlns="http://ws.apache.org/ns/synapse">
+    <address uri="http://localhost:9000/services/SimpleStockQuoteService">
         <suspendOnFailure>
             <initialDuration>-1</initialDuration>
             <progressionFactor>1</progressionFactor>
@@ -8,5 +8,5 @@
         <markForSuspension>
             <retriesBeforeSuspension>0</retriesBeforeSuspension>
         </markForSuspension>
-    </http>
+    </address>
 </endpoint>

@@ -1,0 +1,27 @@
+openapi: 3.0.1
+info:
+  title: SOAP2JSON2
+  description: API Definition of SOAP2JSON2
+  version: 1.0.0
+servers:
+- url: http://localhost:8290/stockorder_api
+paths:
+  /:
+    get:
+      responses:
+        default:
+          description: Default response
+    post:
+      requestBody:
+        description: Sample Payload
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payload:
+                  type: object
+        required: false
+      responses:
+        default:
+          description: Default response

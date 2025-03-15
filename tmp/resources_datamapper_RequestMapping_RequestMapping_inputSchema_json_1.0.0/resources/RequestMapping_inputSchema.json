@@ -1,0 +1,41 @@
+{
+  "$schema": "http://wso2.org/json-schema/wso2-data-mapper-v5.0.0/schema#",
+  "type": "object",
+  "title": "root",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "dob": {
+      "type": "string"
+    },
+    "ssn": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "doctor": {
+      "type": "string"
+    },
+    "hospital_id": {
+      "type": "string"
+    },
+    "hospital": {
+      "type": "string"
+    },
+    "cardNo": {
+      "type": "string"
+    },
+    "appointment_date": {
+      "type": "string"
+    }
+  },
+  "inputType": "JSON"
+}

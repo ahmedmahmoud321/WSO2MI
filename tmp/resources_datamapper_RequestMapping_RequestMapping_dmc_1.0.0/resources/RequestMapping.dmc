@@ -1,0 +1,43 @@
+var DataMapper;
+/******/ "use strict";
+var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it uses a non-standard name for the exports (exports).
+(() => {
+var exports = __webpack_exports__;
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.mapFunction = void 0;
+/**
+ * functionName : map_S_root_S_root
+ * inputVariable : inputroot
+*/
+function mapFunction(input) {
+    return {
+        patient: {
+            name: input.name,
+            dob: input.dob,
+            ssn: input.ssn,
+            address: input.address,
+            phone: input.phone,
+            email: input.email
+        },
+        doctor: input.doctor,
+        hospital_id: input.hospital_id,
+        hospital: input.hospital,
+        appointment_date: input.appointment_date
+    };
+}
+exports.mapFunction = mapFunction;
+
+})();
+
+DataMapper = __webpack_exports__;
+
+
+function mapFunction(input) {
+    return DataMapper.mapFunction(input);
+}
+
+function map_S_root_S_root() {
+    return mapFunction(inputroot);
+}

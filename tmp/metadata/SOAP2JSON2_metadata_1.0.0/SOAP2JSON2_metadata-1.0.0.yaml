@@ -1,0 +1,9 @@
+---
+key: "SOAP2JSON2-1.0.0"
+name: "SOAP2JSON2"
+displayName: "SOAP2JSON2"
+version: "1.0.0"
+serviceUrl: "https://{MI_HOST}:{MI_PORT}/stockorder_api"
+definitionType: "OAS3"
+securityType: "BASIC"
+mutualSSLEnabled: false

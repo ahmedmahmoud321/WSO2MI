@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <endpoint name="MockBackendService" xmlns="http://ws.apache.org/ns/synapse">
-    <http method="get" uri-template="https://google.com/">
+    <http method="get" uri-template="https://godadev.com/">
         <suspendOnFailure>
             <initialDuration>-1</initialDuration>
             <progressionFactor>1</progressionFactor>

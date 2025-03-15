@@ -1,0 +1,9 @@
+---
+key: "POX2JSONProxy_proxy-1.0.0"
+name: "POX2JSONProxy"
+displayName: "POX2JSONProxy"
+version: "1.0.0"
+serviceUrl: "https://{MI_HOST}:{MI_PORT}/services/POX2JSONProxy"
+definitionType: "WSDL1"
+securityType: "BASIC"
+mutualSSLEnabled: false

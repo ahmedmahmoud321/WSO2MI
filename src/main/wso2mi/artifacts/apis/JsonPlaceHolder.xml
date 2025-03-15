@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/jsonplaceholder" name="JsonPlaceHolder" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="GET" uri-template="/">
+        <inSequence>
+        </inSequence>
+        <faultSequence>
+        </faultSequence>
+    </resource>
+    <resource methods="GET" uri-template="/getOnePost/{id}">
+        <inSequence>
+            <http.get configKey="JsonPlaceHolderConnection">
+                <relativePath>/posts/${params.pathParams.id}
+                </relativePath>
+                <headers>[]</headers>
+                <forceScAccepted>false</forceScAccepted>
+                <disableChunking>false</disableChunking>
+                <forceHttp10>false</forceHttp10>
+                <noKeepAlive>false</noKeepAlive>
+                <responseVariable>http_get_1</responseVariable>
+                <overwriteBody>true</overwriteBody>
+            </http.get>
+            <respond/>
+        </inSequence>
+        <faultSequence>
+        </faultSequence>
+    </resource>
+    <resource methods="GET" uri-template="/commentsForPost?postId={postId}">
+        <inSequence>
+            <http.get configKey="JsonPlaceHolderConnection">
+                <relativePath>/comments?postId=${params.queryParams.postId}</relativePath>
+                <headers>[]</headers>
+                <forceScAccepted>false</forceScAccepted>
+                <disableChunking>false</disableChunking>
+                <forceHttp10>false</forceHttp10>
+                <noKeepAlive>false</noKeepAlive>
+                <responseVariable>http_get_1</responseVariable>
+                <overwriteBody>true</overwriteBody>
+            </http.get>
+            <respond/>
+        </inSequence>
+        <faultSequence>
+        </faultSequence>
+    </resource>
+    <resource methods="POST" uri-template="/createPost">
+        <inSequence>
+        </inSequence>
+        <faultSequence>
+        </faultSequence>
+    </resource>
+</api>

@@ -7,29 +7,7 @@ systems, and data sources. It is based on the popular open-source project Apache
 cloud-native, lightweight, and decentralized integration platform that allows you to integrate services, systems, and
 data sources. It is based on the popular open-source project Apache Synapse.
 
-### Topics
 
-* [Message Routing](#message-routing)
-* [Message Transformation](#message-transformation)
-* [Message Processing](#message-processing)
-* [Service Orchestration](#service-orchestration)
-* [Asynchronous Messaging Processing](#asynchronous-messaging-processing)
-* [Protocol Switching](#protocol-switching)
-* [SaaS and B2B Integration](#saas-and-b2b-integration)
-* [Data Integration](#data-integration)
-* [File Processing](#file-processing)
-* [Periodic Execution](#periodic-execution)
-* [Rest API](#rest-api)
-* [Websocket](#websocket)
-* [Webhook](#webhook)
-* [Proxy Service](#proxy-service)
-* [Inbound Endpoint](#inbound-endpoint)
-* [Local Entry](#local-entry)
-* [Template](#template)
-* [Message Store](#message-store)
-* [Message Processor](#message-processor)
-* [Endpoint](#endpoint)
-* [Sequence](#sequence)
 
 ### Message Transformation
 
@@ -100,7 +78,7 @@ the payload factory will take the format that he will send to the backend which 
 </payloadFactory>
 ```
 
-**payload**
+**Payload**  **Body**
 the payload is the xml of the soap message, which will be sent to the backend
 
 ```xml
@@ -121,6 +99,8 @@ the payload is the xml of the soap message, which will be sent to the backend
 ```
 
 **Arguments**
+> It will take the arguments from json to pass it as argument to xml 
+
 `expression` is the path of the value in the json payload
 `evaluator` is the type of the value in the json payload
 
@@ -158,6 +138,9 @@ Endpoint should be of type `address` and the uri should be the backend uri
 </call>
 ```
 
+
+
+
 ### Property Mediator
 
 The property mediator ensures that the response is converted back into JSON before sending it to the client.
@@ -174,7 +157,7 @@ generated values through XPath expressions.
 
 #### Why Is This Property Mediator Used?
 
-After the `<call>` mediator sends the SOAP request to `SimpleStockEp`, the response received is in `SOAP/XML` format.
+After the `<call>` mediator sends the SOAP request to `SimpleStockEp`, the response received is in `SOAP/XML` format and we want to get response as json.
 
 **Attributes:**
 
@@ -634,10 +617,35 @@ proxy will be exposed and can be called using this url `http://localhost:8290/se
 </proxy>
 ```
 
+> Note: At the proxy we can publish wsdl a **collection like of postman** that describes the service for more reference
+> check the wso2 mi docs.
 
 
+## Service Orchestration
+
+the process of exposing multiple grained services using a single coarse-grained service. The service client will only have access to a single micro service
+
+* Synchronous service orchestration
+* Asynchronous service orchestration
 
 
+### Components 
+* Rest API ✅
+* Http Connector
+* Variable Mediator 
+* PayloadFactory ✅
+
+
+### Connectors 
+![img.png](img.png)
+
+![img_1.png](img_1.png)
+
+![img_2.png](img_2.png)
+
+### Http Connector
+
+HTTP Connector Overview
 
 
 
