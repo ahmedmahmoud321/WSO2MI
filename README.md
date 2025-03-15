@@ -645,10 +645,17 @@ the process of exposing multiple grained services using a single coarse-grained 
 
 ### Http Connector
 
-HTTP Connector Overview
 
 
 
+### Variable mediator
+
+The Variable mediator is used to manage variables within a mediation flow. The Variable mediator allows you to set variables, which can then be used later in the mediation flow.
+
+```xml
+<variable name="userDataObject" expression="${payload.user.data}" type="JSON"/>
+<variable name="userId" expression="${payload.user.id}" type="INTEGER"/>
+```
 
 
 
